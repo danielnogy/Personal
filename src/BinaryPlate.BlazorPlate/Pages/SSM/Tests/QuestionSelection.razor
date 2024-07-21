@@ -1,0 +1,228 @@
+﻿@using BinaryPlate.BlazorPlate.Contracts.Consumers.SSM
+@using BinaryPlate.BlazorPlate.Features.SSM.QuestionCategories.Queries.GetQuestionCategoriess
+@using BinaryPlate.BlazorPlate.Features.SSM.Questions.Queries.GetQuestions
+@using Syncfusion.Blazor.Popups
+@implements IDisposable
+
+<SfGrid @ref="Grid" AllowTextWrap="true" AllowSelection="true" DataSource="QuestionItems">
+    <GridSelectionSettings CheckboxMode="CheckboxSelectionType.ResetOnRowClick" CheckboxOnly="true" PersistSelection="true" Type="Syncfusion.Blazor.Grids.SelectionType.Multiple" Mode="Syncfusion.Blazor.Grids.SelectionMode.Row"></GridSelectionSettings>
+    <GridColumns>
+        <GridColumn Type="ColumnType.CheckBox" MinWidth="50" Width="50"></GridColumn>
+        <GridColumn Field=@nameof(QuestionItem.Id) IsPrimaryKey="true" IsIdentity="true" Visible="false"></GridColumn>
+        <GridColumn Field=@nameof(QuestionItem.Text) HeaderText="Intrebare"></GridColumn>
+    </GridColumns>
+    <GridTemplates>
+        <ToolbarTemplate Context="ToolbarContext">
+            <SfToolbar>
+                <ToolbarEvents Clicked="ToolbarClickHandler"></ToolbarEvents>
+                <ToolbarItems>
+                    <ToolbarItem Type="ItemType.Input">
+                        <Template>
+                            <SfDropDownList TItem="QuestionCategoryItem"  FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains" TValue="int" DataSource="QuestionCategories.OrderBy(x=>x.Name)" @bind-Value="SelectedQuestionCategoryId" Placeholder="Categorie" >
+                                <DropDownListEvents TItem="QuestionCategoryItem" TValue="int" ValueChange="@(async ()=>await QuestionsLoad())"></DropDownListEvents>
+                                <DropDownListFieldSettings Text="Name" Value="Id"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                        </Template>
+                    </ToolbarItem>
+                    <ToolbarItem Type="ItemType.Separator"></ToolbarItem>
+                    <ToolbarItem  Type="ItemType.Input" Align="ItemAlign.Right">
+                        <Template>
+                            <SfTextBox @bind-Value="SearchText" Placeholder="Cautare cuvant/fraza cheie"  @oninput=InputHandler></SfTextBox>
+                        </Template>
+                    </ToolbarItem>
+                </ToolbarItems>
+            </SfToolbar>
+        </ToolbarTemplate>
+    </GridTemplates>
+    <GridEvents TValue="QuestionItem" DataBound="DataBound" RowSelected="OnRowSelected" RowDeselected="OnRowDeselected"></GridEvents>
+</SfGrid>
+<SfPager @ref="Pager" NumericItemsCount="5" TotalItemsCount=TotalItems PageSize="@PageSize" PageChanged="PageChangedHandler"></SfPager>
+
+
+@code {
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
+    public List<QuestionItem> SelectedQuestions { get; set; } = new();
+    [Inject] private SfDialogService DialogService { get; set; }
+    [Inject] public IQuestionsClient QuestionsClient { get; set; }
+    [Inject] public IQuestionCategoriesClient QuestionCategoriesClient { get; set; }
+    [Inject] TimerHelper TimerObject { get; set; }
+    private List<QuestionItem> QuestionItems { get; set; } = new();
+    private SfGrid<QuestionItem> Grid { get; set; }
+    private List<QuestionCategoryItem> QuestionCategories { get; set; } = new();
+    private GetQuestionsQuery GetQuestionsQuery { get; set; } = new GetQuestionsQuery();
+    private GetQuestionsResponse GetQuestionsResponse { get; set; } = new GetQuestionsResponse();
+    private GetQuestionCategoriesQuery GetQuestionCategoriesQuery { get; set; } = new();
+    private GetQuestionCategoriesResponse GetQuestionCategoriesResponse { get; set; } = new();
+
+
+    public int TotalItems { get; set; } = 1;
+    public int PageSize { get; set; } = 4;
+    public SfPager Pager { get; set; }
+    private int SelectedQuestionCategoryId { get; set; }
+    private string SearchText { get; set; }
+
+    private void OnRowSelected(RowSelectEventArgs<QuestionItem> args)
+    {
+        if (!SelectedQuestions.Select(x => x.Id).Contains(args.Data.Id))
+        {
+            SelectedQuestions.Add(args.Data);
+        }
+    }
+    private void OnRowDeselected(RowDeselectEventArgs<QuestionItem> args)
+    {
+        var itemToRemove = SelectedQuestions.FirstOrDefault(x => x.Id == args.Data.Id);
+        if (itemToRemove != null)
+        {
+            SelectedQuestions.Remove(itemToRemove);
+        }
+    }
+    private async Task DataBound()
+    {
+
+        var idsAlreadySelected = SelectedQuestions.Select(x => x.Id);
+        if (idsAlreadySelected.Count() > 0)
+        {
+            foreach (var item in QuestionItems)
+            {
+                if (idsAlreadySelected.Contains(item.Id))
+                {
+                    await Grid.SelectRowAsync((await Grid.GetRowIndexByPrimaryKeyAsync(item.Id)));
+                }
+            }
+        }
+
+    }
+    private async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        var selectedRecords = await Grid.GetSelectedRecordsAsync();
+
+        if (args.Item.Id == "add")
+        {
+
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+
+
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await QuestionCategoriesLoad();
+            SelectedQuestionCategoryId = QuestionCategories.Select(x => x.Id).FirstOrDefault();
+            TimerObject.OnElapsed += async () =>
+            {
+                await QuestionsLoad();
+            };
+            TimerObject.SetTimer(600);            
+        }
+    }
+    private async Task QuestionsLoad()
+    {
+        if (Grid != null)
+            await Grid.ShowSpinnerAsync();
+        while (Pager == null )
+        {
+            await Task.Delay(30);
+        }
+        PageSize = 4;
+
+        GetQuestionsQuery.QuestionCategoryId = SelectedQuestionCategoryId;
+        GetQuestionsQuery.PageNumber = Pager.CurrentPage;
+        GetQuestionsQuery.RowsPerPage = Pager.PageSize;
+        GetQuestionsQuery.SearchText = SearchText;
+        GetQuestionsQuery.SortBy = "";
+        //if we want to see selected questions
+        if (SelectedQuestionCategoryId == -1)
+        {
+            QuestionItems = SelectedQuestions
+                                .Where(x=>
+                                    x.Text.Contains(!string.IsNullOrWhiteSpace(SearchText) ? SearchText : ""))
+                                .ToList();
+            TotalItems = SelectedQuestions.Count;
+            PageSize = SelectedQuestions.Count;
+            await Grid.Refresh();
+            if (Grid != null)
+                await Grid.HideSpinnerAsync();
+            StateHasChanged();
+            return;
+        }
+        var responseWrapper = await QuestionsClient.GetQuestions(GetQuestionsQuery);
+        if (responseWrapper.IsSuccessStatusCode)
+        {
+            if (responseWrapper.Payload != null)
+            {
+                TotalItems = responseWrapper.Payload.Questions.TotalRows;
+                GetQuestionsResponse = responseWrapper.Payload;
+                QuestionItems = GetQuestionsResponse.Questions.Items.ToList();
+                if (Grid != null)
+                    await Grid.Refresh();
+                StateHasChanged();
+
+            }
+        }
+        if (Grid != null)
+            await Grid.HideSpinnerAsync();
+    }
+    private async Task QuestionCategoriesLoad()
+    {
+
+        while (Pager == null)
+        {
+            await Task.Delay(30);
+        }
+        GetQuestionCategoriesQuery.RowsPerPage = -1;
+        GetQuestionCategoriesQuery.SortBy = "";
+
+        var responseWrapper = await QuestionCategoriesClient.GetQuestionCategories(GetQuestionCategoriesQuery);
+        if (responseWrapper.IsSuccessStatusCode)
+        {
+            if (responseWrapper.Payload != null)
+            {
+                //TotalItems = responseWrapper.Payload.Questions.TotalRows;
+                GetQuestionCategoriesResponse = responseWrapper.Payload;
+                QuestionCategories = GetQuestionCategoriesResponse.QuestionCategories.Items.ToList();
+                QuestionCategories.Add(new QuestionCategoryItem { Id = 0, Name = " Toate " });
+                QuestionCategories.Add(new QuestionCategoryItem { Id = -1, Name = " Selectate " });
+                if (Grid != null)
+                    await Grid.Refresh();
+                StateHasChanged();
+
+            }
+        }
+    }
+    private async void PageChangedHandler(PageChangedEventArgs args)
+    {
+        await QuestionsLoad();
+        StateHasChanged();
+    }
+    private async void InputHandler(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        if (args.Value != null)
+        {
+            SearchText = (string)args.Value;
+            TimerObject.StopTimer();
+            TimerObject.StartTimer();
+        }
+
+        
+    }
+    public List<QuestionItem> GetSelectedRecords()
+    {
+        return SelectedQuestions;
+    }
+    public void SetSelectedRecords(List<QuestionItem> items)
+    {
+        SelectedQuestions = items;
+    }
+
+    public void Dispose()
+    {
+        TimerObject.Dispose();
+    }
+}

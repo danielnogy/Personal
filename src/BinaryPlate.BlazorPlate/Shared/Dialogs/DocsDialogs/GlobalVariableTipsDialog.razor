@@ -1,0 +1,21 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudText>
+            <MudElement HtmlTag="h4" Class="mt-4">This page demonstrates the use of global variables in conjunction with a Singleton Service.</MudElement>
+            <MudDivider />
+            <MudElement HtmlTag="h4" Class="mt-4">A Play/Stop button is located in the header menu, which is part of the Layout component.</MudElement>
+            <MudDivider />
+            <MudElement HtmlTag="h4" Class="mt-4">Clicking on the Play/Stop button sends a boolean value to this page.</MudElement>
+            <MudDivider />
+            <MudElement HtmlTag="h4" Class="mt-4">An audio player can be displayed or hidden based on the received value.</MudElement>
+        </MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Info" Variant="Variant.Filled" OnClick="Submit">@Resource.Got_it</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+}

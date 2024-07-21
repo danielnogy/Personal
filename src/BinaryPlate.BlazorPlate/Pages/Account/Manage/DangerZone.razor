@@ -1,0 +1,32 @@
+﻿<MudCard>
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">@Resource.Danger_Zone</MudText>
+            </CardHeaderContent>
+        <CardHeaderActions>
+            <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Default" />
+        </CardHeaderActions>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText Typo="Typo.body2">@Resource.Your_account_contains_personal_data_that_can_be_downloaded</MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Primary"
+                   OnClick="DownloadPersonalData">
+            <MudText>@Resource.Download</MudText>
+        </MudButton>
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Warning"
+                   OnClick="DeleteAccount">
+            <MudText>@Resource.Delete_Account</MudText>
+        </MudButton>
+    </MudCardActions>
+    <MudDivider />s
+    <MudExpansionPanels>
+        <MudExpansionPanel Text="@Resource.Validation_Summary" IsExpanded="true" Disabled="true" HideIcon="true">
+            <MudText Color="@Color.Error">
+            </MudText>
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+</MudCard>

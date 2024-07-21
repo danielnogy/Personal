@@ -1,0 +1,13 @@
+﻿@page "/ssm/Questions/editQuestion/{QuestionId:int}"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+
+<QuestionsForm BreadCrumbText="Editare material"
+                 QuestionId="QuestionId"
+                 QuestionModel="QuestionParameter"
+                 HeaderText="Editare material"
+                 SubmitForm="SubmitForm"
+                  CreatedQuestionAnswersChanged="RefreshAddedQuestionAnswers"
+                  ModifiedQuestionAnswersChanged="RefreshModifiedQuestionAnswers"
+                  RemovedQuestionAnswersChanged="RefreshRemovedQuestionAnswers"
+></QuestionsForm>
+

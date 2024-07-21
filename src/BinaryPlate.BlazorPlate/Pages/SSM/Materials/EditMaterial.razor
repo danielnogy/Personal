@@ -1,0 +1,9 @@
+﻿@page "/ssm/Materials/editMaterial/{MaterialId:int}"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+
+<MaterialsForm BreadCrumbText="Editare material"
+                 MaterialId="MaterialId"
+                 MaterialModel="MaterialParameter"
+                 HeaderText="Editare material"
+                 SubmitForm="SubmitForm"></MaterialsForm>
+

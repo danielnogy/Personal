@@ -1,0 +1,72 @@
+﻿@page "/justfortest"
+@using BinaryPlate.BlazorPlate.Contracts.Consumers.SSM
+@using BinaryPlate.BlazorPlate.Features.SSM.QuestionCategories.Queries.GetQuestionCategoriess
+@using BinaryPlate.BlazorPlate.Features.SSM.Questions.Queries.GetQuestions
+@using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTests
+@using Syncfusion.Blazor.Popups
+<EditForm Model="TestModel" OnValidSubmit="OnValidSubmit">
+    <EditContextApiExceptionFallback @ref="EditContextApiExceptionFallback" />
+    <FluentValidationValidator />
+
+    <SfCard>
+        <CardHeader>
+            <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">
+                @HeaderText
+            </MudText>
+        </CardHeader>
+        <CardContent>
+            <SfTab CssClass="dfault-tab e-background" LoadOn="ContentLoad.Init">
+                <TabEvents Selecting="Select"></TabEvents>
+                <TabItems>
+                    <TabItem>
+                        <ChildContent>
+                            <TabHeader Text="General" />
+                        </ChildContent>
+                        <ContentTemplate>
+                            <MudGrid Class="py-2">
+                                <MudItem xs="6">
+                                    <SfTextBox @bind-Value="TestModel.Title" Placeholder="Titlu" FloatLabelType="FloatLabelType.Always"></SfTextBox>
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <SfTextArea Width="100%" @bind-Value="TestModel.Description" Placeholder="Descriere" FloatLabelType="FloatLabelType.Always"></SfTextArea>
+                                </MudItem>
+                            </MudGrid>
+                        </ContentTemplate>
+                    </TabItem>
+                    <TabItem >
+                        <ChildContent>
+                            <TabHeader Text="Intrebari" />
+                        </ChildContent>
+                        <ContentTemplate>
+                            <MudGrid Class="py-2">
+                                <MudItem xs="12">
+                                    @SelectedQuestions.Count;
+                                   
+                                <QuestionSelection @ref="QuestionSelectionComponent"></QuestionSelection>
+                                </MudItem>
+                            </MudGrid>
+                        </ContentTemplate>
+                    </TabItem>
+                    <TabItem>
+                        <ChildContent>
+                            <TabHeader Text="Materiale" />
+                        </ChildContent>
+                        <ContentTemplate>
+                            <MudGrid Class="py-2">
+                                <MudItem xs="12">
+                                    <MaterialSelection @ref="MaterialSelectionComponent"></MaterialSelection>
+                                </MudItem>
+                            </MudGrid>
+                        </ContentTemplate>
+                    </TabItem>
+                </TabItems>
+            </SfTab>
+        </CardContent>
+        <CardFooter>
+            <div style="width:100%">
+                <SfButton IsPrimary="true" Content="Salvare" CssClass="w-100"></SfButton>
+            </div>
+        </CardFooter>
+    </SfCard>
+
+</EditForm>

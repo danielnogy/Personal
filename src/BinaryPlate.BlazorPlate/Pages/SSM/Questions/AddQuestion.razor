@@ -1,0 +1,10 @@
+﻿@page "/ssm/Questions/addQuestion"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+
+<QuestionsForm 
+    BreadCrumbText="Adaugare" 
+    QuestionModel="QuestionItem"
+    HeaderText="Adauga intrebare"
+    SubmitForm="SubmitForm"
+ CreatedQuestionAnswersChanged="RefreshAddedQuestionAnswers"></QuestionsForm>
+

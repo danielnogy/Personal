@@ -1,0 +1,5 @@
+﻿@page "/ssm/QuestionCategories/addQuestionCategory"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+
+<QuestionCategoriesForm BreadCrumbText="Adaugare" QuestionCategoryModel="QuestionCategoryItem" HeaderText="Categorie noua" SubmitForm="SubmitForm"></QuestionCategoriesForm>
+

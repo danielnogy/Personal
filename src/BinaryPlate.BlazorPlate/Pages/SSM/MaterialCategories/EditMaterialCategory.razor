@@ -1,0 +1,9 @@
+﻿@page "/ssm/MaterialCategories/editMaterialCategory/{MaterialCategoryId:int}"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+
+<MaterialCategoriesForm BreadCrumbText="Editare departament"
+                 MaterialCategoryId="MaterialCategoryId"
+                 MaterialCategoryModel="MaterialCategoryParameter"
+                 HeaderText="Editare departament"
+                 SubmitForm="SubmitForm"></MaterialCategoriesForm>
+

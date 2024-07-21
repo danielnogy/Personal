@@ -1,0 +1,5 @@
+﻿@page "/ssm/Materials/addMaterial"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+
+<MaterialsForm BreadCrumbText="Adaugare" MaterialModel="MaterialItem" HeaderText="Adauga departament" SubmitForm="SubmitForm"></MaterialsForm>
+

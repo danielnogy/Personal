@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<BlazorCacheBootResources>true</BlazorCacheBootResources>
+		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+		<GenerateMvcApplicationPartsAssemblyAttributes>false</GenerateMvcApplicationPartsAssemblyAttributes>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
+		<PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+		<PackageReference Include="Mapster" Version="7.4.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.1" />
+		<PackageReference Include="MudBlazor" Version="6.14.0" />
+		<PackageReference Include="Syncfusion.Blazor.Buttons" Version="26.1.35" />
+		<PackageReference Include="Syncfusion.Blazor.Cards" Version="26.1.35" />
+		<PackageReference Include="Syncfusion.Blazor.Grid" Version="26.1.35" />
+		<PackageReference Include="Syncfusion.Blazor.Inputs" Version="26.1.35" />
+		<PackageReference Include="Syncfusion.Blazor.Navigations" Version="26.1.35" />
+		<PackageReference Include="Syncfusion.Blazor.Popups" Version="26.1.35" />
+		<PackageReference Include="Syncfusion.Blazor.Themes" Version="26.1.35" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\BinaryPlate.AppResources\BinaryPlate.AppResources.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+	</ItemGroup>
+
+</Project>

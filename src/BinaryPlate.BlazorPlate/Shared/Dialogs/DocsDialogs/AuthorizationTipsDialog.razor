@@ -1,0 +1,95 @@
+﻿<MudDialog>
+ <DialogContent>
+     <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+         <MudTabPanel Text="Test Case">
+             <MudContainer>
+                 <h1 class="mb-4">Overview</h1>
+ 
+                 <p>
+                     This test case emphasizes client-side and server-side authorization processes within the BlazorPlate environment. These mechanisms play a pivotal role in ensuring robust access control, safeguarding the system against unauthorized interactions with restricted resources.
+                 </p>
+ 
+                 <h2 class="mt-4">Test Cases</h2>
+ 
+                 <!-- Test Case 1 -->
+                 <h2 class="mt-3">1. Verify Full-Privileged User's Access</h2>
+                 <ul>
+                     <li>
+                         <ol>
+                             <li>Log in as John Smith, a user with full access privileges in the Applicants Module.</li>
+                             <li>Navigate to the Proof of Concepts section and utilize the Client-Side Authorization module.</li>
+                             <li>Evaluate if John Smith can view the list of applicants, view details, edit, and delete applicant profiles.</li>
+                         </ol>
+                     </li>
+                     <li>
+                         <strong>Expected Result:</strong> John Smith should be allowed to perform all actions in the Applicants module as per his permissions.
+                     </li>
+                 </ul>
+ 
+                 <!-- Test Case 2 -->
+                 <h2 class="mt-3">2. Verify Read-Only User's Limited Access</h2>
+                 <ul>
+                     <li>
+                         <ol>
+                             <li>Log in as Mandy Moore, a read-only user in the Applicants Module.</li>
+                             <li>Navigate to the Proof of Concepts section and use the Client-Side Authorization module.</li>
+                             <li>Evaluate if Mandy Moore can view the list of applicants and their profiles.</li>
+                             <li>Verify that create, update, and delete buttons are hidden.</li>
+                         </ol>
+                     </li>
+                     <li>
+                         <strong>Expected Result:</strong> Mandy Moore should only be allowed to view applicants and profiles, with create, update, and delete options hidden.
+                     </li>
+                 </ul>
+ 
+                 <!-- Test Case 3 -->
+                 <h2 class="mt-3">3. Verify Server-Side Authorization for Read-Only User</h2>
+                 <ul>
+                     <li>
+                         <ol>
+                             <li>Utilize the Server-Side Authorization example in the proof of concepts section.</li>
+                             <li>Send requests to the Applicants' API endpoints on behalf of Mandy Moore.</li>
+                             <li>Attempt to edit and delete an applicant profile.</li>
+                         </ol>
+                     </li>
+                     <li>
+                         <strong>Expected Result:</strong> Server-Side Authorization should prevent Mandy Moore from successfully editing or deleting an applicant profile.
+                     </li>
+                 </ul>
+ 
+                 <!-- Test Case 4 -->
+                 <h2 class="mt-3">4. Verify Combined Authorization Approach</h2>
+                 <ul>
+                     <li>
+                         <ol>
+                             <li>Emphasize the importance of using both Client-Side and Server-Side Authorization for enhanced security.</li>
+                             <li>Highlight the potential risks of relying solely on Client-Side or Server-Side Authorization.</li>
+                         </ol>
+                     </li>
+                     <li>
+                         <strong>Expected Result:</strong> Developers should grasp the significance of combining both authorization techniques for maximum security and performance.
+                     </li>
+                 </ul>
+ 
+                 <h1 class="mt-4">Conclusion</h1>
+                 <p>
+                     By meticulously following these documented test cases, developers can comprehensively explore and grasp the client-side and server-side authorization techniques within BlazorPlate's feature set.
+                 </p>
+             </MudContainer>
+         </MudTabPanel>
+         <MudTabPanel Text="Video Tutorial">
+                <MudContainer>
+                    <iframe width="650" height="615" src="https://www.youtube.com/embed/jhKRU48F6ZA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+                </MudContainer>
+         </MudTabPanel>
+     </MudTabs>
+ </DialogContent>
+ <DialogActions>
+     <MudButton Color="Color.Info" Variant="Variant.Filled" OnClick="Submit">@Resource.Got_it</MudButton>
+     </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+}

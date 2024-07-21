@@ -1,0 +1,44 @@
+﻿@using BinaryPlate.BlazorPlate.Consumers.HttpClients.SSM
+@using BinaryPlate.BlazorPlate.Contracts.Consumers.SSM
+@using BinaryPlate.BlazorPlate.Features.SSM.Questions.Commands.CreateQuestion
+@using BinaryPlate.BlazorPlate.Features.SSM.Questions.Commands.UpdateQuestion
+@using BinaryPlate.BlazorPlate.Features.SSM.Questions.Queries.GetQuestionsAnswers
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+
+<SfGrid @ref="Grid" DataSource="QuestionAnswers" AllowPaging="true">
+    <GridPageSettings PageSize="20"></GridPageSettings>
+    <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+    <GridTemplates>
+        <ToolbarTemplate>
+            <SfToolbar>
+                <ToolbarEvents Clicked="ToolbarClickHandler"></ToolbarEvents>
+                <ToolbarItems>
+                    <ToolbarItem Id="text">
+                        <Template>
+                            <MudText Align="Align.Left" Color="Color.Primary" Typo="Typo.h5">Raspunsuri</MudText>
+                        </Template>
+                    </ToolbarItem>
+                    <ToolbarItem Type="ItemType.Separator"></ToolbarItem>
+                    <ToolbarItem Id="add" PrefixIcon="e-icons e-plus" Text="Adaugare" TooltipText="Adauga Document"></ToolbarItem>
+                    <ToolbarItem Id="edit" PrefixIcon="e-icons e-edit" Text="Editare" TooltipText="Editeaza Document"></ToolbarItem>
+                    <ToolbarItem Id="delete" PrefixIcon="e-icons e-trash" Text="Stergere" TooltipText="Sterge Document"></ToolbarItem>
+                </ToolbarItems>
+            </SfToolbar>
+        </ToolbarTemplate>
+    </GridTemplates>
+    <GridColumns>
+        <GridColumn Field=@nameof(QuestionAnswerItem.Id)  IsPrimaryKey="true" Visible="false"></GridColumn>
+        <GridColumn Field=@nameof(QuestionAnswerItem.Text) HeaderText="Text"></GridColumn>
+        <GridColumn Field=@nameof(QuestionAnswerItem.IsCorrect) HeaderText="Corect">
+            <Template>
+                <div>
+                    @((context as QuestionAnswerItem).IsCorrect ? "Corect":"Incorect")
+                </div>
+            </Template>
+        </GridColumn>
+    </GridColumns>
+    <GridEvents TValue="QuestionAnswerItem"  OnActionComplete="OnActionComplete"></GridEvents>
+</SfGrid>
+
+

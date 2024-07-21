@@ -1,0 +1,41 @@
+﻿@if (LoginProvider != ExternalLoginProvider.None)
+{
+    var provider = LoginProvider.ToString().ToLower();
+    var externalLoginClass = $"external-login {provider}-external-login full-width";
+    var iconClass = $"external-login-icon {provider}-external-login-icon";
+
+    <MudLink Underline="@Underline.None"
+             Color="Color.Default"
+             Class="@externalLoginClass"
+             Href="@GetExternalLoginUrl()">
+        <span class="@iconClass"></span>
+        @Resource.SignInWith @LoginProvider
+    </MudLink>
+}
+
+@code {
+    [Inject]
+    private UrlProvider UrlProvider { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    [Parameter]
+    public ExternalLoginProvider LoginProvider { get; set; }
+
+    private string GetExternalLoginUrl()
+    {
+        var subDomain = NavigationManager.GetSubDomain();
+
+        var returnUrl = string.IsNullOrWhiteSpace(subDomain)
+               ? $"{UrlProvider.BaseClientUrl}{UrlProvider.LoginRedirectRelativePath}"
+               : $"{UrlProvider.BaseTenantClientUrl}{UrlProvider.LoginRedirectRelativePath}";
+
+        var provider = LoginProvider.ToString().ToLower();
+
+        var loginUrl = $"{UrlProvider.BaseApiUrl}account/ExternalLogins/{provider}-account-login?returnurl={returnUrl}";
+
+        return loginUrl;
+    }
+}
+

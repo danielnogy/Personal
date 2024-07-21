@@ -1,0 +1,9 @@
+﻿@page "/ssm/Departments/editDepartment/{DepartmentId:int}"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+
+<DepartmentsForm BreadCrumbText="Editare departament"
+                 DepartmentId="DepartmentId"
+                 DepartmentModel="DepartmentParameter"
+                 HeaderText="Editare departament"
+                 SubmitForm="SubmitForm"></DepartmentsForm>
+

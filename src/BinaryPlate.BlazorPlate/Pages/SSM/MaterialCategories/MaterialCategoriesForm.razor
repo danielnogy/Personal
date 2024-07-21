@@ -1,0 +1,56 @@
+﻿@using BinaryPlate.BlazorPlate.Contracts.Consumers.SSM
+@using BinaryPlate.BlazorPlate.Features.SSM.MaterialCategories.Commands.UpdateMaterialCategory
+@using BinaryPlate.BlazorPlate.Features.SSM.MaterialCategories.Queries.GetMaterialCategoryForEdit
+
+@using Syncfusion.Blazor.Popups
+
+
+
+<EditForm Model="MaterialCategoryModel" OnValidSubmit="OnValidSubmit">
+    <EditContextApiExceptionFallback @ref="EditContextApiExceptionFallback" />
+    <FluentValidationValidator />
+
+    <SfTab CssClass="default-tab e-background">
+        <TabItems>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Categorie intrebari"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SfCard>
+                        <CardHeader>
+                            <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">
+                                @HeaderText
+                            </MudText>
+                        </CardHeader>
+                        <CardContent>
+                            <MudContainer>
+                                <MudGrid>
+                                    <MudItem xs="6">
+                                        <SfTextBox @bind-Value="MaterialCategoryModel.Name" Placeholder="Denumire" FloatLabelType="FloatLabelType.Auto"></SfTextBox>
+                                    </MudItem>
+                                    <MudItem xs="6">
+                                        <SfTextBox Multiline="true" @bind-Value="MaterialCategoryModel.Description" Placeholder="Descriere" FloatLabelType="FloatLabelType.Auto"></SfTextBox>
+                                    </MudItem>
+                                    
+                                </MudGrid>
+                            </MudContainer>
+                        </CardContent>
+                        <CardFooter>
+                            @* <MudButton ButtonType="MudBlazor.ButtonType.Submit"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       Class="ml-auto"
+                                       FullWidth="true">
+                                <MudText>Salvare</MudText> *@
+                                <div style="width:100%">
+                                    <SfButton IsPrimary="true" Content="Salvare" CssClass="w-100"></SfButton>
+                                </div>
+                        </CardFooter>
+                    </SfCard>
+                </ContentTemplate>
+            </TabItem>
+        </TabItems>
+    </SfTab>
+</EditForm>
+

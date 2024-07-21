@@ -1,0 +1,5 @@
+﻿@page "/ssm/MaterialCategories/addMaterialCategory"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+
+<MaterialCategoriesForm BreadCrumbText="Adaugare" MaterialCategoryModel="MaterialCategoryItem" HeaderText="Categorie noua" SubmitForm="SubmitForm"></MaterialCategoriesForm>
+

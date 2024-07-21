@@ -1,0 +1,62 @@
+﻿@using BinaryPlate.BlazorPlate.Contracts.Consumers.SSM
+@using BinaryPlate.BlazorPlate.Features.SSM.QuestionCategories.Queries.GetQuestionCategoriess
+@using BinaryPlate.BlazorPlate.Features.SSM.Questions.Commands.UpdateQuestion
+@using BinaryPlate.BlazorPlate.Features.SSM.Questions.Queries.GetQuestionForEdit
+@using BinaryPlate.BlazorPlate.Features.SSM.Questions.Queries.GetQuestions
+
+@using Syncfusion.Blazor.Popups
+
+
+
+<EditForm Model="QuestionModel" OnValidSubmit="OnValidSubmit">
+    <EditContextApiExceptionFallback @ref="EditContextApiExceptionFallback" />
+    <FluentValidationValidator />
+
+    <SfCard>
+        <CardHeader>
+            <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">
+                @HeaderText
+            </MudText>
+        </CardHeader>
+        <CardContent>
+            <SfTab CssClass="default-tab e-background">
+                <TabItems>
+                    <TabItem>
+                        <ChildContent>
+                            <TabHeader Text="General"></TabHeader>
+                        </ChildContent>
+                        <ContentTemplate>
+                            <MudContainer>
+                                <MudGrid Class="py-2">
+                                    <MudItem xs="6">
+                                        <SfTextArea @bind-Value="QuestionModel.Text" Placeholder="Text" FloatLabelType="FloatLabelType.Auto"></SfTextArea>
+                                        <ValidationMessage For="@(() => QuestionModel.Text)" />
+                                    </MudItem>
+                                    <MudItem xs="6">
+                                        <SfDropDownList AllowFiltering="true" TValue="int" TItem="QuestionCategoryItem" Placeholder="Categorie" FloatLabelType="FloatLabelType.Auto" DataSource="QuestionCategoryItems" @bind-Value="QuestionModel.CategoryId">
+                                            <DropDownListFieldSettings Text="Name" Value="Id"></DropDownListFieldSettings>
+                                        </SfDropDownList>
+                                        <ValidationMessage For="@(() => QuestionModel.CategoryId)" />
+                                    </MudItem>
+                                    <MudItem xs="12">
+                                        <Answers QuestionId="QuestionModel.Id"
+                                                 OnAddedQuestionAnswersListChanged="RefreshAddedQuestionAnswers"
+                                                 OnModifiedQuestionAnswersListChanged="RefreshModifiedQuestionAnswers"
+                                                 OnRemovedQuestionAnswersListChanged="RefreshRemovedQuestionAnswers"></Answers>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudContainer>
+                        </ContentTemplate>
+                    </TabItem>
+                    
+                </TabItems>
+            </SfTab>
+        </CardContent>
+        <CardFooter>
+            <div style="width:100%">
+                <SfButton IsPrimary="true" Content="Salvare" CssClass="w-100"></SfButton>
+            </div>
+        </CardFooter>
+    </SfCard>
+</EditForm>
+

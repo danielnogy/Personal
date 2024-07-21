@@ -1,0 +1,46 @@
+﻿@page "/ssm/Questions"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+@using BinaryPlate.BlazorPlate.Features.SSM.Questions.Queries.GetQuestions
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Cards
+@using Syncfusion.Blazor.Grids
+@* e-fill e-background *@
+<SfTab CssClass="default-tab e-background">
+    <TabItems>
+        <TabItem>
+            <ChildContent>
+                <TabHeader Text="Intrebari"></TabHeader>
+            </ChildContent>
+            <ContentTemplate>
+                <SfCard>
+                    @* Se implementeaza toolbarul custom  *@
+                    <CardContent>
+                        <GridComponent @ref="Grid" TValue="QuestionItem" Items="Items" Text="Intrebari"
+                                       AddEvent="Add" EditEvent="Edit" DeleteEvent="Delete"
+                                       RecordSelected="SelectedRecord"
+                                       SearchText=@SearchText
+                                       ServerLoad="ServerLoad"
+                                       PagerTotalItems="TotalItems"
+                                       ExcelFileName="Intrebari"
+                                       AllowTextWrap="true"
+                                       ExcelDatasourceLoad="ExcelDatasourceLoad">
+                            <GridComponentColumns>
+                                <GridColumn Field=@nameof(QuestionItem.Id) Visible="false" IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                                <GridColumn Field=@nameof(QuestionItem.Text) HeaderText="Titlu"></GridColumn>
+                                <GridColumn Field=@nameof(QuestionItem.CreatedOn) HeaderText="Create la ora"></GridColumn>
+                                <GridColumn Field=@nameof(QuestionItem.ModifiedOn) HeaderText="Modificat la"></GridColumn>
+                            </GridComponentColumns>
+                        </GridComponent>
+                    </CardContent>
+                </SfCard>
+            </ContentTemplate>
+        </TabItem>
+    </TabItems>
+</SfTab>
+
+
+
+
+@code {
+
+}

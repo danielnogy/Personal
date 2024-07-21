@@ -1,0 +1,23 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudText>
+            <MudElement HtmlTag="h4">This page features multilingual resource strings displayed in the language selected by the current user.</MudElement>
+            <MudDivider />
+            <MudElement HtmlTag="h4" Class="mt-4">The localized strings can be accessed directly by calling [ResourceName].[Key], which is automatically generated when you add a new .resx file.</MudElement>
+            <MudDivider />
+            <MudElement HtmlTag="h4" Class="mt-4">ASP.NET Core localization provides IStringLocalizer that uses .resx files to store localization resources.</MudElement>
+            <MudDivider />
+            <MudElement HtmlTag="h4" Class="mt-4">The localized strings can also be accessed indirectly through LocalizationService, which implements IStringLocalizer by providing the key of the resource string in the .resx file.</MudElement>
+            <MudDivider />
+            <MudElement HtmlTag="h4" Class="mt-4">You're not limited to using .resx files. By implementing IStringLocalizer, any data source can be used, such as Excel Spreadsheets, JSON, SQL Databases, and more.</MudElement>
+        </MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Info" Variant="Variant.Filled" OnClick="Submit">@Resource.Got_it</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+}

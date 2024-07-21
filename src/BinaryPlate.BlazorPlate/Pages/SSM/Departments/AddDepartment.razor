@@ -1,0 +1,5 @@
+﻿@page "/ssm/Departments/addDepartment"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+
+<DepartmentsForm BreadCrumbText="Adaugare" DepartmentModel="DepartmentItem" HeaderText="Adauga departament" SubmitForm="SubmitForm"></DepartmentsForm>
+

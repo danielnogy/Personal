@@ -1,0 +1,19 @@
+﻿@page "/poc/GlobalVariable"
+
+<MudCard>
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6" Color="Color.Primary" Class="mb-4">@Resource.Global_Variable</MudText>
+            <MudFab OnClick="@ShowTipsDialog" Label="@Resource.Tips" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.TipsAndUpdates" Size="Size.Small" IconSize="Size.Small" Class="ma-2" />
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        @if (AppStateManager.PlayAudio)
+        {
+            <audio autoplay controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" /></audio>
+        }
+    </MudCardContent>
+    <MudCardActions>
+        @*<MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>*@
+    </MudCardActions>
+</MudCard>

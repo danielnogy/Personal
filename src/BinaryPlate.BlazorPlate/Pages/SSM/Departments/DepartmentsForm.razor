@@ -1,0 +1,62 @@
+﻿@using BinaryPlate.BlazorPlate.Contracts.Consumers.SSM
+@using BinaryPlate.BlazorPlate.Features.SSM.Departments.Commands.UpdateDepartment
+@using BinaryPlate.BlazorPlate.Features.SSM.Departments.Queries.GetDepartmentForEdit
+@using BinaryPlate.BlazorPlate.Features.SSM.Departments.Queries.GetDepartments
+
+@using Syncfusion.Blazor.Popups
+
+
+
+<EditForm Model="DepartmentModel" OnValidSubmit="OnValidSubmit">
+    <EditContextApiExceptionFallback @ref="EditContextApiExceptionFallback" />
+    <FluentValidationValidator />
+
+    <SfTab CssClass="default-tab e-background">
+        <TabItems>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Departament"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <SfCard>
+                        <CardHeader>
+                            <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">
+                                @HeaderText
+                            </MudText>
+                        </CardHeader>
+                        <CardContent>
+                            <MudContainer>
+                                <MudGrid>
+                                    <MudItem xs="6">
+                                        <SfTextBox @bind-Value="DepartmentModel.Name" Placeholder="Denumire" FloatLabelType="FloatLabelType.Auto"></SfTextBox>
+                                    </MudItem>
+                                    <MudItem xs="6">
+                                        <SfTextBox @bind-Value="DepartmentModel.Name" Placeholder="Denumire" FloatLabelType="FloatLabelType.Auto"></SfTextBox>
+                                    </MudItem>
+                                    <MudItem xs="6">
+                                        <SfTextBox @bind-Value="DepartmentModel.Name" Placeholder="Denumire" FloatLabelType="FloatLabelType.Auto"></SfTextBox>
+                                    </MudItem>
+                                    <MudItem xs="6">
+                                        <SfTextBox @bind-Value="DepartmentModel.Name" Placeholder="Denumire" FloatLabelType="FloatLabelType.Auto"></SfTextBox>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudContainer>
+                        </CardContent>
+                        <CardFooter>
+                            @* <MudButton ButtonType="MudBlazor.ButtonType.Submit"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       Class="ml-auto"
+                                       FullWidth="true">
+                                <MudText>Salvare</MudText> *@
+                                <div style="width:100%">
+                                    <SfButton IsPrimary="true" Content="Salvare" CssClass="w-100"></SfButton>
+                                </div>
+                        </CardFooter>
+                    </SfCard>
+                </ContentTemplate>
+            </TabItem>
+        </TabItems>
+    </SfTab>
+</EditForm>
+

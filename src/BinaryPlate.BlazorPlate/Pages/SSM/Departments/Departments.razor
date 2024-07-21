@@ -1,0 +1,47 @@
+﻿@page "/ssm/Departments"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+@using BinaryPlate.BlazorPlate.Features.SSM.Departments.Queries.GetDepartments
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Cards
+@using Syncfusion.Blazor.Grids
+@* e-fill e-background *@
+<SfTab CssClass="default-tab e-background">
+    <TabItems>
+        <TabItem>
+            <ChildContent>
+                <TabHeader Text="Departamente"></TabHeader>
+            </ChildContent>
+            <ContentTemplate>
+                <SfCard>
+                    @* Se implementeaza toolbarul custom  *@
+                    <CardContent>
+                        <GridComponent @ref="Grid" TValue="DepartmentItem" Items="Items"
+                                       AddEvent="Add" EditEvent="Edit" DeleteEvent="Delete" Text="Departamente"
+                                       RecordSelected="SelectedRecord"
+                                       SearchText=@SearchText
+                                       ServerLoad="ServerLoad"
+                                       PagerTotalItems="TotalItems"
+                                       ExcelFileName="Departamente"
+                                       ExcelDatasourceLoad="ExcelDatasourceLoad">
+                            <GridComponentColumns>
+                                <GridColumn Field=@nameof(DepartmentItem.Id) Visible="false" IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                                <GridColumn Field=@nameof(DepartmentItem.Name) HeaderText="Denumire"></GridColumn>
+                                <GridColumn Field=@nameof(DepartmentItem.CreatedBy) HeaderText="Creat de"></GridColumn>
+                                <GridColumn Field=@nameof(DepartmentItem.CreatedOn) HeaderText="Create la ora"></GridColumn>
+                                <GridColumn Field=@nameof(DepartmentItem.CreatedBy) HeaderText="Modificat de"></GridColumn>
+                                <GridColumn Field=@nameof(DepartmentItem.ModifiedOn) HeaderText="Modificat la"></GridColumn>
+                            </GridComponentColumns>
+                        </GridComponent>
+                    </CardContent>
+                </SfCard>
+            </ContentTemplate>
+        </TabItem>
+    </TabItems>
+</SfTab>
+
+
+
+
+@code {
+
+}

@@ -1,0 +1,9 @@
+﻿@page "/ssm/QuestionCategories/editQuestionCategory/{QuestionCategoryId:int}"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+
+<QuestionCategoriesForm BreadCrumbText="Editare departament"
+                 QuestionCategoryId="QuestionCategoryId"
+                 QuestionCategoryModel="QuestionCategoryParameter"
+                 HeaderText="Editare departament"
+                 SubmitForm="SubmitForm"></QuestionCategoriesForm>
+

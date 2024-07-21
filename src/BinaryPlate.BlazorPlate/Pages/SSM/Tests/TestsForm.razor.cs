@@ -1,0 +1,79 @@
+using BinaryPlate.BlazorPlate.Features.SSM.Questions.Queries.GetQuestions;
+using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTests;
+using Syncfusion.Blazor.Popups;
+using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTestsQuestions;
+using Syncfusion.Blazor.Navigations;
+using BinaryPlate.BlazorPlate.Features.SSM.Materials.Queries.GetMaterials;
+using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTestsMaterials;
+
+namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
+{
+    public partial class TestsForm
+    {
+        [Parameter] public string HeaderText { get; set; }
+        [Parameter] public TestItem TestModel { get; set; } = new();
+        [Parameter] public int TestId { get; set; } = 0;
+        [Parameter] public EventCallback SubmitForm { get; set; }
+        [Parameter] public string BreadCrumbText { get; set; } = "Editare/Adaugare instruire";
+
+        [Inject] private SfDialogService DialogService { get; set; }
+        private EditContextApiExceptionFallback EditContextApiExceptionFallback { get; set; }
+        private List<QuestionItem> QuestionItems { get; set; } = new();
+        private List<QuestionItem> SelectedQuestions { get; set; } = new();
+        private List<MaterialItem> SelectedMaterials { get; set; } = new();
+        private QuestionSelection QuestionSelectionComponent { get; set; }
+        private MaterialSelection MaterialSelectionComponent { get; set; }
+
+        public void Select(SelectingEventArgs args)
+        {
+            if (args.IsSwiped)
+            {
+                args.Cancel = true;
+            }
+        }
+        protected override async Task OnInitializedAsync()
+        {
+            //await QuestionCategoriesLoad();
+            //SelectedQuestionCategoryId = QuestionCategories.Select(x => x.Id).FirstOrDefault();
+            //await QuestionsLoad();
+        }
+        private void PopulateSelectedQuestionsInTest()
+        {
+            SelectedQuestions = QuestionSelectionComponent.GetSelectedRecords();
+            foreach (var question in SelectedQuestions)
+            {
+                TestModel.TestQuestions.Add(new TestQuestionItem
+                {
+                    TestId = TestModel.Id,
+                    QuestionId = question.Id
+                });
+            }
+        }
+        private void PopulateSelectedMaterialsInTest()
+        {
+            SelectedMaterials = MaterialSelectionComponent.GetSelectedRecords();
+            foreach (var material in SelectedMaterials)
+            {
+                TestModel.TestMaterials.Add(new TestMaterialItem
+                {
+                    TestId = TestModel.Id,
+                    MaterialId = material.Id
+                });
+            }
+        }
+        private async Task OnValidSubmit()
+        {
+            PopulateSelectedQuestionsInTest();
+            PopulateSelectedMaterialsInTest();
+
+            var dialog = await DialogService.ConfirmAsync(
+                TestId != 0 ? "Confirmati actualizarile facute?" : "Confirmati inregistrearea noua?",
+                "Confirmare");
+
+            if (dialog)
+            {
+                await SubmitForm.InvokeAsync();
+            }
+        }
+    }
+}

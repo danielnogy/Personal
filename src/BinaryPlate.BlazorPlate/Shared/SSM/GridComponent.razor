@@ -1,0 +1,137 @@
+﻿@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Popups
+@typeparam TValue
+<SfGrid @ref="Grid" TValue="TValue" AllowTextWrap="@AllowTextWrap" DataSource="Items" AllowExcelExport="true">
+    <GridTemplates>
+        <ToolbarTemplate>
+            <SfToolbar>
+                <ToolbarEvents Clicked="ToolbarClickHandler"></ToolbarEvents>
+                <ToolbarItems>
+                    <ToolbarItem Id="text">
+                        <Template>
+                            <MudText Align="Align.Left" Color="Color.Primary" Typo="Typo.h5">@Text</MudText>
+                        </Template>
+                    </ToolbarItem>
+                    <ToolbarItem Type="ItemType.Separator"></ToolbarItem>
+                    <ToolbarItem Id="add" PrefixIcon="e-icons e-plus" Text="Adaugare" TooltipText="Adauga Document"></ToolbarItem>
+                    <ToolbarItem Id="edit" PrefixIcon="e-icons e-edit" Text="Editare" TooltipText="Editeaza Document"></ToolbarItem>
+                    <ToolbarItem Id="delete" PrefixIcon="e-icons e-trash" Text="Stergere" TooltipText="Sterge Document"></ToolbarItem>
+                    <ToolbarItem Id="exportareexcel" Align="ItemAlign.Right" Type="ItemType.Button" OnClick="ExportExcel" Text="Export excel" PrefixIcon="bi bi-file-earmark-excel" TooltipText="Exporta datele in excel"></ToolbarItem>
+                </ToolbarItems>
+            </SfToolbar>
+        </ToolbarTemplate>
+    </GridTemplates>
+    <GridColumns>
+        @GridComponentColumns
+    </GridColumns>
+    <GridEvents RowSelected="RowSelectHandler" TValue="TValue"></GridEvents>
+</SfGrid>
+<SfPager @ref="Pager" NumericItemsCount="5" TotalItemsCount=PagerTotalItems PageSize="10" PageChanged="PageChangedHandler"></SfPager>
+@code {
+    [Inject] private SfDialogService DialogService { get; set; }
+    [Parameter]public List<TValue> Items { get; set; }
+    [Parameter] public string Text { get; set; } = "Tabel";
+    [Parameter] public bool AllowTextWrap { get; set; }
+    [Parameter]public RenderFragment GridComponentColumns { get; set; }
+    [Parameter]public EventCallback ServerLoad { get; set; }
+    [Parameter]public EventCallback AddEvent { get; set; }
+    [Parameter]public EventCallback<TValue> EditEvent { get; set; }
+    [Parameter]public EventCallback<TValue> DeleteEvent { get; set; }
+    [Parameter]public Func<Task<IEnumerable<TValue>>> ExcelDatasourceLoad { get; set; }
+    [Parameter]public string ExcelFileName { get; set; } = $"Export";
+    [Parameter]public TValue RecordSelected { get; set; }
+    public SfGrid<TValue> Grid { get; set; }
+    public SfPager Pager { get; set; }
+    private int PagerPageCount { get; set; } = 2;
+    [Parameter]public int PagerTotalItems { get; set; } = 1;
+    [Parameter]public string SearchText { get; set; } = "";
+    protected override async Task OnInitializedAsync()
+    {
+        while (Pager == null)
+        {
+            await Task.Delay(30);
+        }
+        await ServerLoad.InvokeAsync();
+    }
+    public void RowSelectHandler(RowSelectEventArgs<TValue> args)
+    {
+        RecordSelected = args.Data;
+    }
+    private async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        var selectedRecords = await Grid.GetSelectedRecordsAsync();
+        if (selectedRecords.Count == 0
+            && (
+            new List<string>() { "edit", "delete" }).Contains(args.Item.Id)
+            )
+        {
+            await ShowDialog("Selectati o inregistrare pentru a efectua operatiunea!", "Atentie!", 1);
+
+        }
+
+        if (args.Item.Id == "add")
+        {
+            await AddEvent.InvokeAsync();
+        }
+        if (args.Item.Id == "edit")
+        {
+            await EditEvent.InvokeAsync(RecordSelected);
+        }
+        if (args.Item.Id == "delete")
+        {
+            await DeleteEvent.InvokeAsync(RecordSelected);
+            //await ServerLoad.InvokeAsync();
+        }
+    }
+
+    private async Task<bool> ShowDialog(string Content, string Title = null, int dialogType = 0, Syncfusion.Blazor.Popups.DialogOptions options = null)
+    {
+        bool dialogConfirm;
+        if (dialogType == 0)
+        {
+            dialogConfirm = await DialogService.ConfirmAsync(Content, Title);
+            return dialogConfirm;
+        }
+        else
+        {
+            await DialogService.AlertAsync(Content, Title, options);
+        }
+
+        return false;
+    }
+
+    private async void ExportExcel()
+    {
+        ExcelExportProperties ExportProperties = new ExcelExportProperties();
+        ExcelTheme Theme = new ExcelTheme();
+        ExcelStyle ThemeStyle = new ExcelStyle()
+            {
+                FontName = "Segoe UI",
+                FontColor = "#666666",
+                FontSize = 10
+            };
+        Theme.Header = ThemeStyle;
+        ExportProperties.FileName = ExcelFileName + ".xlsx";
+        ExportProperties.ExportType = ExportType.AllPages;
+        ExportProperties.Theme = Theme;
+
+        IEnumerable<TValue> datasourceInit = await ExcelDatasourceLoad.Invoke();
+        var datasource = datasourceInit.Cast<object>();
+        ExportProperties.DataSource = datasource;
+
+        await Grid.ExportToExcelAsync(ExportProperties);
+        Console.WriteLine("Exportare cu succes");
+    }
+
+    private async void PageChangedHandler(PageChangedEventArgs args)
+    {
+        await ServerLoad.InvokeAsync();
+        StateHasChanged();
+    }
+
+    public async Task Refresh()
+    {
+        await Grid.Refresh();
+    }
+}

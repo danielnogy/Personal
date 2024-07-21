@@ -1,0 +1,39 @@
+﻿@page "/ssm/Tests"
+@using BinaryPlate.BlazorPlate.Contracts.Consumers.SSM
+@using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTests
+@using Syncfusion.Blazor.Popups
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+<SfTab CssClass="default-tab e-background">
+    <TabItems>
+        <TabItem>
+            <ChildContent>
+                <TabHeader Text="Intrebari"></TabHeader>
+            </ChildContent>
+            <ContentTemplate>
+                <SfCard>
+                    @* Se implementeaza toolbarul custom  *@
+                    <CardContent>
+                        <GridComponent @ref="Grid" TValue="TestItem" Items="Items" Text="Instruiri"
+                                       AddEvent="Add" EditEvent="Edit" DeleteEvent="Delete"
+                                       RecordSelected="SelectedRecord"
+                                       SearchText=@SearchText
+                                       ServerLoad="ServerLoad"
+                                       PagerTotalItems="TotalItems"
+                                       ExcelFileName="Instruiri"
+                                       ExcelDatasourceLoad="ExcelDatasourceLoad">
+                            <GridComponentColumns>
+                                <GridColumn Field=@nameof(TestItem.Id) Visible="false" IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                                <GridColumn Field=@nameof(TestItem.Title) HeaderText="Titlu"></GridColumn>
+                                <GridColumn Field=@nameof(TestItem.Description) HeaderText="Descriere"></GridColumn>
+                                <GridColumn Field=@nameof(TestItem.CreatedOn) HeaderText="Create la ora"></GridColumn>
+                                <GridColumn Field=@nameof(TestItem.ModifiedOn) HeaderText="Modificat la"></GridColumn>
+                            </GridComponentColumns>
+                        </GridComponent>
+                    </CardContent>
+                </SfCard>
+            </ContentTemplate>
+        </TabItem>
+    </TabItems>
+</SfTab>
+
+

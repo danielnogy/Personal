@@ -1,0 +1,42 @@
+﻿@page "/settings/fileStorageSettings"
+@attribute [Authorize]
+
+<MudText Typo="Typo.h5" Color="Color.Primary">@Resource.File_Storage_Settings</MudText>
+<EditForm Model="FileStorageSettingsForEdit" OnValidSubmit="SubmitForm">
+    <EditContextApiExceptionFallback @ref="EditContextApiExceptionFallback" />
+    <MudHidden @bind-Value="FileStorageSettingsForEdit.Id" />
+    <MudHidden @bind-Value="FileStorageSettingsForEdit.ConcurrencyStamp" />
+    <MudCard>
+        <MudCardContent>
+
+        @*<MudToggleIconButton Toggled="@StorageType"
+                               ToggledChanged="OnToggledChanged"
+                               Icon="@Icons.Material.Outlined.Computer"
+                               Color="@Color.Info"
+                               Title="@Resource.On_Premises_File_Storage"
+                               ToggledIcon="@Icons.Material.Outlined.Cloud"
+                               ToggledColor="@Color.Secondary"
+                               ToggledTitle="@Resource.Azure_File_Storage" />
+
+          <span>@Resource.Storage_type_is @(StorageType ? Resource.Azure_File_Storage : Resource.On_Premises_File_Storage)</span>*@
+
+        @if (FileStorageSettingsLoaded)
+        {
+            <MudRadioGroup T="int" @bind-SelectedOption="@FileStorageSettingsForEdit.StorageType">
+                <MudRadio Option="@(0)" Color="Color.Primary">@Resource.On_Premises_File_Storage</MudRadio>
+                <MudRadio Option="@(1)" Color="Color.Secondary">@Resource.Azure_File_Storage</MudRadio>
+            </MudRadioGroup>
+        }
+
+    </MudCardContent>
+    <MudCardActions Class="pb-4 pl-4">
+        <MudButton ButtonType="ButtonType.Submit"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   Class="ml-auto"
+                   FullWidth="true">
+            <MudText>@Resource.Save</MudText>
+            </MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>

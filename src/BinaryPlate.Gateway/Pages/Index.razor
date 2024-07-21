@@ -1,0 +1,37 @@
+﻿@layout MainLayout
+@page "/"
+
+<MudText Typo="Typo.h4" GutterBottom="true">Create your own tenant</MudText>
+<MudForm @ref="Form" @bind-IsValid="@Success">
+    <MudTextField Label="Tenant Name"
+                  T="string"
+                  Immediate="true"
+                  Required="true"
+                  RequiredError="Tenant name is required!"
+                  ValueChanged="BuildTenantUrl"
+                  Variant="Variant.Outlined"
+                  Validation="@(new Func<string, string>(TenantCharLengthValidator))" />
+</MudForm>
+
+<MudButton ButtonType="ButtonType.Submit"
+           Style="margin-top:4px"
+           Variant="Variant.Filled"
+           Color="Color.Primary"
+           Size="Size.Large"
+           OnClick="SubmitForm"
+           Disabled="@(!Success || SubmitButtonDisabled)"
+           FullWidth="true">Create my tenant</MudButton>
+
+<MudExpansionPanels>
+    <MudExpansionPanel Text="Tenant URL Preview" IsExpanded="true" Disabled="true" HideIcon="true">
+        @if (!string.IsNullOrEmpty(FinalTenantName) && Success)
+        {
+            @TenantUrl
+        }
+    </MudExpansionPanel>
+    @if (ShowProgress)
+    {
+        <MudElement HtmlTag="h6">This process may take a few seconds to initialize your tenant.</MudElement>
+        <MudProgressLinear Color="Color.Secondary" Indeterminate="true" Class="my-7" />
+    }
+</MudExpansionPanels>

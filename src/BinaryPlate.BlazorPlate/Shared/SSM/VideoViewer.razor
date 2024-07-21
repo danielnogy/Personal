@@ -1,0 +1,69 @@
+﻿@inject IJSRuntime JS
+<div class="py-3">
+	<video id=@Id data-id="@Id" @attributes="@GetVideoAttributes()" playsinline data-poster="/path/to/poster.jpg">
+		<source src="@VideoUri" type="@type" />
+		@* 		<source src="https://bunatati.blob.core.windows.net/fisiere/Fisiere/oceans.mp4" type="video/mp4" />
+		*@		@* <p class="vjs-no-js">
+		To view this video please enable JavaScript, and consider upgrading to a
+		web browser that
+		<a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+		</p> *@
+	</video>
+</div>
+@*data-setup='{}' class="video-js vjs-big-play-centered vjs-fill vjs-fluid" *@
+<style>
+	
+
+
+
+	/* .video-js {
+			background: content-box;
+			position: static;
+			height: auto;
+		} */
+</style>
+@code {
+	[Parameter] public string VideoUri { get; set; }
+	[Parameter] public bool AutoPlay { get; set; } = true;
+	[Parameter] public bool ShowControls { get; set; } = true;
+	[Parameter] public string Id { get; set; }
+	[Parameter] public string type { get; set; } = "video/mp4";
+	[Parameter] public bool AlterVideo { get; set; }
+
+	private Dictionary<string, object> GetVideoAttributes()
+	{
+		var attributes = new Dictionary<string, object>();
+
+		if (ShowControls)
+		{
+			attributes["controls"] = "controls";
+		}
+
+		if (AutoPlay)
+		{
+			attributes["autoplay"] = "autoplay";
+		}
+
+		return attributes;
+	}
+
+	public async Task ReloadVideo()
+	{
+		await JS.InvokeVoidAsync("loadVideo", Id);
+	}
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			// if (AlterVideo)
+			// {
+			// 	await JS.InvokeVoidAsync("alterVideo", Id);
+			// }
+			// else
+			// {
+			// 	await JS.InvokeVoidAsync("deAlterVideo", Id);
+			// }
+			//await JS.InvokeVoidAsync("loadPlayer", Id,true);
+		}
+	}
+}

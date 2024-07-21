@@ -1,0 +1,48 @@
+﻿@page "/ssm/QuestionCategories"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+@using BinaryPlate.BlazorPlate.Features.SSM.QuestionCategories.Queries.GetQuestionCategoriess
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Cards
+@using Syncfusion.Blazor.Grids
+@* e-fill e-background *@
+<SfTab CssClass="default-tab e-background">
+    <TabItems>
+        <TabItem>
+            <ChildContent>
+                <TabHeader Text="Categorii intrebari"></TabHeader>
+            </ChildContent>
+            <ContentTemplate>
+                <SfCard>
+                    @* Se implementeaza toolbarul custom  *@
+                    <CardContent>
+                        <GridComponent @ref="Grid" TValue="QuestionCategoryItem" Text="Categorii intrebari"
+                                       Items="Items"
+                                       AddEvent="Add" EditEvent="Edit" DeleteEvent="Delete"
+                                       RecordSelected="SelectedRecord"
+                                       SearchText=@SearchText
+                                       ServerLoad="ServerLoad"
+                                       PagerTotalItems="TotalItems"
+                                       ExcelFileName="Categorii Intrebari"
+                                       ExcelDatasourceLoad="ExcelDatasourceLoad">
+                            <GridComponentColumns>
+                                <GridColumn Field=@nameof(QuestionCategoryItem.Id) Visible="false" IsIdentity="true" IsPrimaryKey="true"></GridColumn>
+                                <GridColumn Field=@nameof(QuestionCategoryItem.Name) HeaderText="Denumire"></GridColumn>
+                                <GridColumn Field=@nameof(QuestionCategoryItem.CreatedBy) HeaderText="Creat de"></GridColumn>
+                                <GridColumn Field=@nameof(QuestionCategoryItem.CreatedOn) HeaderText="Create la ora"></GridColumn>
+                                <GridColumn Field=@nameof(QuestionCategoryItem.CreatedBy) HeaderText="Modificat de"></GridColumn>
+                                <GridColumn Field=@nameof(QuestionCategoryItem.ModifiedOn) HeaderText="Modificat la"></GridColumn>
+                            </GridComponentColumns>
+                        </GridComponent>
+                    </CardContent>
+                </SfCard>
+            </ContentTemplate>
+        </TabItem>
+    </TabItems>
+</SfTab>
+
+
+
+
+@code {
+
+}
