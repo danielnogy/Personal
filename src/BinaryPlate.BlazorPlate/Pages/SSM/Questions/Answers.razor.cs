@@ -133,6 +133,11 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Questions
             {
                 if ((args.RequestType == Syncfusion.Blazor.Grids.Action.Save && (args.Action == "Add" || args.Action == "Edit")) || args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
                 {
+                    if (args.Action == "Add" || args.Action == "Edit")
+                    {
+                        args.Data.Id = OthersHelper.GetRandomIntExcluding(QuestionAnswers.Select(x => x.Id).ToList(), 1, int.MaxValue);
+                    }
+
                     var datasource = QuestionAnswers.Select(x => x.MapToAdd(x)).ToList();
                     await OnAddedQuestionAnswersListChanged.InvokeAsync(datasource);
                     await Grid.Refresh();

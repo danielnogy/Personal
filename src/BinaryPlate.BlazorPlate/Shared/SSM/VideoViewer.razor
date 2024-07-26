@@ -1,15 +1,19 @@
 ﻿@inject IJSRuntime JS
-<div class="py-3">
-	<video id=@Id data-id="@Id" @attributes="@GetVideoAttributes()" playsinline data-poster="/path/to/poster.jpg">
-		<source src="@VideoUri" type="@type" />
-		@* 		<source src="https://bunatati.blob.core.windows.net/fisiere/Fisiere/oceans.mp4" type="video/mp4" />
-		*@		@* <p class="vjs-no-js">
-		To view this video please enable JavaScript, and consider upgrading to a
-		web browser that
-		<a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-		</p> *@
-	</video>
-</div>
+@if (!string.IsNullOrWhiteSpace(VideoUri))
+{
+    <div class="py-3">
+        <video id=@Id data-id="@Id" @attributes="@GetVideoAttributes()" playsinline data-poster="/path/to/poster.jpg">
+            <source src="@VideoUri" type="@type" />
+            @* 		<source src="https://bunatati.blob.core.windows.net/fisiere/Fisiere/oceans.mp4" type="video/mp4" />
+        *@		@* <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that
+        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+        </p> *@
+        </video>
+    </div>
+}
+
 @*data-setup='{}' class="video-js vjs-big-play-centered vjs-fill vjs-fluid" *@
 <style>
 	

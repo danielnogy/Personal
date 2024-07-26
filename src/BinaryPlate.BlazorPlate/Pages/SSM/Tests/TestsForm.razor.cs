@@ -5,6 +5,7 @@ using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTestsQuestions;
 using Syncfusion.Blazor.Navigations;
 using BinaryPlate.BlazorPlate.Features.SSM.Materials.Queries.GetMaterials;
 using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTestsMaterials;
+using System.Security.Authentication.ExtendedProtection;
 
 namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
 {
@@ -29,6 +30,13 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
             if (args.IsSwiped)
             {
                 args.Cancel = true;
+            }
+        }
+        protected override async Task OnParametersSetAsync()
+        {
+            if (TestId !=0)
+            {
+
             }
         }
         protected override async Task OnInitializedAsync()
