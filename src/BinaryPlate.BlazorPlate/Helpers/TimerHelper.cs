@@ -16,8 +16,11 @@ namespace BinaryPlate.BlazorPlate.Helpers
         }
         public void Dispose()
         {
-            _timer.Dispose();
-            _timer.Elapsed -= NotifyTimerElapsed;
+            if (_timer != null)
+            {
+                _timer.Dispose();
+                _timer.Elapsed -= NotifyTimerElapsed;
+            }
         }
         private void NotifyTimerElapsed(object sender, ElapsedEventArgs e)
         {

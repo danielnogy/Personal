@@ -6,6 +6,8 @@ using Syncfusion.Blazor.Navigations;
 using BinaryPlate.BlazorPlate.Features.SSM.Materials.Queries.GetMaterials;
 using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTestsMaterials;
 using System.Security.Authentication.ExtendedProtection;
+using BinaryPlate.BlazorPlate.Features.SSM.Tests.Commands.CreateTest.AddModels;
+using BinaryPlate.BlazorPlate.Features.SSM.Tests.Commands.UpdateTest.EditModels;
 
 namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
 {
@@ -24,6 +26,28 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
         private List<MaterialItem> SelectedMaterials { get; set; } = new();
         private QuestionSelection QuestionSelectionComponent { get; set; }
         private MaterialSelection MaterialSelectionComponent { get; set; }
+        #region TestQuestions 
+        [Parameter] public EventCallback<List<TestQuestionItemForAdd>> OnAddedTestQuestionsListChanged { get; set; }
+        [Parameter] public EventCallback<List<TestQuestionItemForEdit>> OnModifiedTestQuestionsListChanged { get; set; }
+        [Parameter] public EventCallback<List<int>> OnRemovedTestQuestionsListChanged { get; set; }
+        public List<TestQuestionItemForAdd> AddedTestQuestionsList { get; set; } = new();
+        public List<TestQuestionItemForEdit> ModifiedTestQuestionsList { get; set; } = new();
+        public List<int> RemovedTestQuestionsList { get; set; } = new();
+
+        #endregion
+        public async void RefreshAddedTestQuestions(List<TestQuestionItemForAdd> itemForAdds)
+        {
+            await OnAddedTestQuestionsListChanged.InvokeAsync(itemForAdds);
+        }
+        //public async void RefreshModifiedQuestionAnswers(List<AnswerItemForEdit> itemForEdits)
+        //{
+        //    ModifiedQuestionAnswers = itemForEdits;
+        //    await ModifiedQuestionAnswersChanged.InvokeAsync(ModifiedQuestionAnswers);
+        //}
+        public async void RefreshRemovedTestQuestions(List<int> itemsToRemove)
+        {
+            await OnRemovedTestQuestionsListChanged.InvokeAsync(itemsToRemove);
+        }
 
         public void Select(SelectingEventArgs args)
         {

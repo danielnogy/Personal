@@ -1,0 +1,15 @@
+﻿@page "/ssm/Tests/editTest/{TestId:int}"
+@attribute [Authorize(Roles = "Admin,Full-Privileged-Officer,Read-Only-Officer,External-Login")]
+
+    @CreatedTestQuestions.Count()
+    @RemovedTestQuestions.Count()
+
+
+
+
+<TestsForm 
+     OnAddedTestQuestionsListChanged="RefreshAddedTestQuestions"
+     OnRemovedTestQuestionsListChanged="RefreshRemovedTestQuestions"
+    TestModel="TestModel" TestId="TestId" HeaderText="Editeaza test"
+    SubmitForm="SubmitForm" BreadCrumbText="Editare"
+></TestsForm>

@@ -4,6 +4,7 @@
 @using BinaryPlate.BlazorPlate.Features.SSM.Questions.Queries.GetQuestions
 @using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTests
 @using Syncfusion.Blazor.Popups
+
 <EditForm Model="TestModel" OnValidSubmit="OnValidSubmit">
     <EditContextApiExceptionFallback @ref="EditContextApiExceptionFallback" />
     <FluentValidationValidator />
@@ -42,7 +43,12 @@
                                 <MudItem xs="12">
                                     @SelectedQuestions.Count;
                                    
-                                <QuestionSelection @ref="QuestionSelectionComponent"></QuestionSelection>
+                                <QuestionSelection
+                                    @ref="QuestionSelectionComponent"
+                                    TestId="@TestId"
+                                     OnAddedTestQuestionsListChanged="RefreshAddedTestQuestions"
+                                     OnRemovedTestQuestionsListChanged="RefreshRemovedTestQuestions"
+                                ></QuestionSelection>
                                 </MudItem>
                             </MudGrid>
                         </ContentTemplate>
