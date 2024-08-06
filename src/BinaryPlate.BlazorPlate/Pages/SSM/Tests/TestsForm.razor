@@ -60,7 +60,11 @@
                         <ContentTemplate>
                             <MudGrid Class="py-2">
                                 <MudItem xs="12">
-                                    <MaterialSelection @ref="MaterialSelectionComponent"></MaterialSelection>
+                                    <MaterialSelection @ref="MaterialSelectionComponent"
+                                        TestId="@TestId"
+                                        OnAddedTestMateiralsListChanged="RefreshAddedTestMaterials"
+                                        OnRemovedTestMaterialsListChanged="RefreshRemovedTestMaterials"
+                                    ></MaterialSelection>
                                 </MudItem>
                             </MudGrid>
                         </ContentTemplate>

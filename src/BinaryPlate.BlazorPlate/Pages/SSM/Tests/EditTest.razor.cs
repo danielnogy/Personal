@@ -23,6 +23,10 @@ public partial class EditTest
     List<TestQuestionItemForAdd> CreatedTestQuestions { get; set; } = new();
     List<TestQuestionItemForEdit> ModifiedTestQuestions { get; set; } = new();
     List<int> RemovedTestQuestions { get; set; }= new();
+    
+    List<TestMaterialItemForAdd> CreatedTestMaterials { get; set; } = new();
+    List<TestMaterialItemForEdit> ModifiedTestMaterials { get; set; } = new();
+    List<int> RemovedTestMaterials { get; set; }= new();
     protected override async Task OnInitializedAsync()
     {
         var responseWrapper = await TestsClient.GetTest(new GetTestForEditQuery
@@ -47,12 +51,29 @@ public partial class EditTest
     {
         RemovedTestQuestions = itemsToRemove;
     }
+    
+    public void RefreshAddedTestMaterials(List<TestMaterialItemForAdd> itemForAdds)
+    {
+        CreatedTestMaterials = itemForAdds;
+    }
+    public void RefreshModifiedTestMaterials(List<TestMaterialItemForEdit> itemForEdits)
+    {
+        ModifiedTestMaterials = itemForEdits;
+    }
+    public void RefreshRemovedTestMaterials(List<int> itemsToRemove)
+    {
+        RemovedTestMaterials = itemsToRemove;
+    }
     public async Task SubmitForm()
     {
         TestModel.Adapt(UpdateTestCommand);
         UpdateTestCommand.ModifiedTestQuestions = ModifiedTestQuestions;
         UpdateTestCommand.NewTestQuestions = CreatedTestQuestions;
         UpdateTestCommand.RemovedTestQuestions = RemovedTestQuestions;
+        
+        UpdateTestCommand.ModifiedTestMaterials = ModifiedTestMaterials;
+        UpdateTestCommand.NewTestMaterials = CreatedTestMaterials;
+        UpdateTestCommand.RemovedTestMaterials = RemovedTestMaterials;
         var responseWrapper = await TestsClient.UpdateTest(UpdateTestCommand);
 
         if (responseWrapper.IsSuccessStatusCode)

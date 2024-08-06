@@ -35,9 +35,22 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
         public List<int> RemovedTestQuestionsList { get; set; } = new();
 
         #endregion
+        #region TestMaterials
+        [Parameter] public EventCallback<List<TestMaterialItemForAdd>> OnAddedTestMaterialsListChanged { get; set; }
+        [Parameter] public EventCallback<List<TestMaterialItemForEdit>> OnModifiedTestMaterialsListChanged { get; set; }
+        [Parameter] public EventCallback<List<int>> OnRemovedTestMaterialsListChanged { get; set; }
+        public List<TestMaterialItemForAdd> AddedTestMaterialsList { get; set; } = new();
+        public List<TestMaterialItemForEdit> ModifiedTestMaterialsList { get; set; } = new();
+        public List<int> RemovedTestMaterialsList { get; set; } = new();
+
+        #endregion
         public async void RefreshAddedTestQuestions(List<TestQuestionItemForAdd> itemForAdds)
         {
             await OnAddedTestQuestionsListChanged.InvokeAsync(itemForAdds);
+        }
+        public async void RefreshAddedTestMaterials(List<TestMaterialItemForAdd> itemForAdds)
+        {
+            await OnAddedTestMaterialsListChanged.InvokeAsync(itemForAdds);
         }
         //public async void RefreshModifiedQuestionAnswers(List<AnswerItemForEdit> itemForEdits)
         //{
@@ -47,6 +60,10 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
         public async void RefreshRemovedTestQuestions(List<int> itemsToRemove)
         {
             await OnRemovedTestQuestionsListChanged.InvokeAsync(itemsToRemove);
+        }
+        public async void RefreshRemovedTestMaterials(List<int> itemsToRemove)
+        {
+            await OnRemovedTestMaterialsListChanged.InvokeAsync(itemsToRemove);
         }
 
         public void Select(SelectingEventArgs args)

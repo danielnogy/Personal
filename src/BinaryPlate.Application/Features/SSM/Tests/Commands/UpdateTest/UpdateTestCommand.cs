@@ -168,7 +168,7 @@ public class UpdateTestCommand : IRequest<Envelope<string>>
         {
             
             // Load the test from the database context and include their testQuestions.
-            var test = await dbContext.Tests.Include(a => a.TestQuestions)
+            var test = await dbContext.Tests.Include(a => a.TestQuestions).Include(m=>m.TestMaterials)
                                             .Where(a => a.Id == request.Id)
                                             .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 

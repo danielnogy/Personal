@@ -3,6 +3,8 @@
 
     @CreatedTestQuestions.Count()
     @RemovedTestQuestions.Count()
+    @CreatedTestMaterials.Count()
+    @RemovedTestMaterials.Count()
 
 
 
@@ -10,6 +12,8 @@
 <TestsForm 
      OnAddedTestQuestionsListChanged="RefreshAddedTestQuestions"
      OnRemovedTestQuestionsListChanged="RefreshRemovedTestQuestions"
+     OnAddedTestMaterialsListChanged="RefreshAddedTestMaterials"
+     OnRemovedTestMaterialsListChanged="RefreshRemovedTestMaterials"
     TestModel="TestModel" TestId="TestId" HeaderText="Editeaza test"
     SubmitForm="SubmitForm" BreadCrumbText="Editare"
 ></TestsForm>

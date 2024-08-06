@@ -12,8 +12,8 @@ public class TestItem : AuditableDto
     public string Description { get; set; }
     public List<TestQuestionItem> TestQuestions { get; set; } = new();
     public List<TestMaterialItem> TestMaterials { get; set; } = new();
-
+    public string ConcurrencyStamp { get; set; }
     #endregion Public Properties
 
-   
+
 }
