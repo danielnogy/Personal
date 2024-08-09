@@ -29,7 +29,7 @@
                             <MudContainer>
                                 <MudGrid Class="py-2">
                                     <MudItem xs="6">
-                                        <SfTextArea @bind-Value="QuestionModel.Text" Placeholder="Text" FloatLabelType="FloatLabelType.Auto"></SfTextArea>
+                                        <SfTextArea @bind-Value="QuestionModel.Text" Placeholder="Text" FloatLabelType="FloatLabelType.Auto" Width="100%"></SfTextArea>
                                         <ValidationMessage For="@(() => QuestionModel.Text)" />
                                     </MudItem>
                                     <MudItem xs="6">
