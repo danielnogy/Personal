@@ -31,6 +31,13 @@
                                 <MudItem xs="6">
                                     <SfTextArea Width="100%" @bind-Value="TestModel.Description" Placeholder="Descriere" FloatLabelType="FloatLabelType.Always"></SfTextArea>
                                 </MudItem>
+                                <MudItem>
+                                    @SelectedEmployees.Count();
+                                    <EmployeeSelection @ref="EmployeeSelectionComponent"
+                                                       TestId="@TestId"
+                                                       OnAddedTestResultsListChanged="RefreshAddedTestResults"
+                                                       OnRemovedTestResultsListChanged="RefreshRemovedTestResults"></EmployeeSelection>
+                                </MudItem>
                             </MudGrid>
                         </ContentTemplate>
                     </TabItem>
@@ -41,7 +48,6 @@
                         <ContentTemplate>
                             <MudGrid Class="py-2">
                                 <MudItem xs="12">
-                                    @SelectedQuestions.Count;
                                    
                                 <QuestionSelection
                                     @ref="QuestionSelectionComponent"

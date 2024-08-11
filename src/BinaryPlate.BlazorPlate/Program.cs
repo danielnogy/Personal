@@ -61,6 +61,7 @@ builder.Services.AddScoped<IMaterialsClient, MaterialsClient>();
 builder.Services.AddScoped<IMaterialCategoriesClient, MaterialCategoriesClient>();
 builder.Services.AddScoped<IQuestionsClient, QuestionsClient>();
 builder.Services.AddScoped<ITestsClient, TestsClient>();
+builder.Services.AddScoped<IEmployeesClient, EmployeesClient>();
 builder.Services.AddScoped<SfDialogService>();
 #endregion
 builder.Services.AddLocalization();

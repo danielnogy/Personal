@@ -8,6 +8,8 @@ using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTestsMaterials;
 using System.Security.Authentication.ExtendedProtection;
 using BinaryPlate.BlazorPlate.Features.SSM.Tests.Commands.CreateTest.AddModels;
 using BinaryPlate.BlazorPlate.Features.SSM.Tests.Commands.UpdateTest.EditModels;
+using BinaryPlate.BlazorPlate.Features.SSM.Employees.Queries.GetEmployees;
+using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTestsResults;
 
 namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
 {
@@ -24,8 +26,10 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
         private List<QuestionItem> QuestionItems { get; set; } = new();
         private List<QuestionItem> SelectedQuestions { get; set; } = new();
         private List<MaterialItem> SelectedMaterials { get; set; } = new();
+        private List<EmployeeItem> SelectedEmployees { get; set; } = new();
         private QuestionSelection QuestionSelectionComponent { get; set; }
         private MaterialSelection MaterialSelectionComponent { get; set; }
+        private EmployeeSelection EmployeeSelectionComponent { get; set; }
         #region TestQuestions 
         [Parameter] public EventCallback<List<TestQuestionItemForAdd>> OnAddedTestQuestionsListChanged { get; set; }
         [Parameter] public EventCallback<List<TestQuestionItemForEdit>> OnModifiedTestQuestionsListChanged { get; set; }
@@ -43,6 +47,14 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
         public List<TestMaterialItemForEdit> ModifiedTestMaterialsList { get; set; } = new();
         public List<int> RemovedTestMaterialsList { get; set; } = new();
 
+        #endregion        
+        #region TestResults
+        [Parameter] public EventCallback<List<TestResultItemForAdd>> OnAddedTestResultsListChanged { get; set; }
+        [Parameter] public EventCallback<List<TestResultItemForEdit>> OnModifiedTestResultsListChanged { get; set; }
+        [Parameter] public EventCallback<List<int>> OnRemovedTestResultsListChanged { get; set; }
+        public List<TestResultItemForAdd> AddedTestResultsList { get; set; } = new();
+        public List<TestResultItemForEdit> ModifiedTestResultsList { get; set; } = new();
+        public List<int> RemovedTestResultsList { get; set; } = new();
         #endregion
         public async void RefreshAddedTestQuestions(List<TestQuestionItemForAdd> itemForAdds)
         {
@@ -51,6 +63,10 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
         public async void RefreshAddedTestMaterials(List<TestMaterialItemForAdd> itemForAdds)
         {
             await OnAddedTestMaterialsListChanged.InvokeAsync(itemForAdds);
+        }
+        public async void RefreshAddedTestResults(List<TestResultItemForAdd> itemForAdds)
+        {
+            await OnAddedTestResultsListChanged.InvokeAsync(itemForAdds);
         }
         //public async void RefreshModifiedQuestionAnswers(List<AnswerItemForEdit> itemForEdits)
         //{
@@ -64,6 +80,10 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
         public async void RefreshRemovedTestMaterials(List<int> itemsToRemove)
         {
             await OnRemovedTestMaterialsListChanged.InvokeAsync(itemsToRemove);
+        }
+        public async void RefreshRemovedTestResults(List<int> itemsToRemove)
+        {
+            await OnRemovedTestResultsListChanged.InvokeAsync(itemsToRemove);
         }
 
         public void Select(SelectingEventArgs args)
@@ -107,6 +127,19 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
                 {
                     TestId = TestModel.Id,
                     MaterialId = material.Id
+                });
+            }
+        }
+
+        private void PopulateSelectedEmployeesInTest()
+        {
+            SelectedEmployees = EmployeeSelectionComponent.GetSelectedRecords();
+            foreach (var employee in SelectedEmployees)
+            {
+                TestModel.TestResults.Add(new TestResultItem
+                {
+                    TestId = TestModel.Id,
+                    EmployeeId = employee.Id
                 });
             }
         }

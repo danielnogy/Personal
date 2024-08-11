@@ -5,15 +5,17 @@
     @RemovedTestQuestions.Count()
     @CreatedTestMaterials.Count()
     @RemovedTestMaterials.Count()
+    @CreatedTestResults.Count()
+    @RemovedTestResults.Count()
 
 
 
 
-<TestsForm 
-     OnAddedTestQuestionsListChanged="RefreshAddedTestQuestions"
-     OnRemovedTestQuestionsListChanged="RefreshRemovedTestQuestions"
-     OnAddedTestMaterialsListChanged="RefreshAddedTestMaterials"
-     OnRemovedTestMaterialsListChanged="RefreshRemovedTestMaterials"
-    TestModel="TestModel" TestId="TestId" HeaderText="Editeaza test"
-    SubmitForm="SubmitForm" BreadCrumbText="Editare"
-></TestsForm>
+<TestsForm OnAddedTestQuestionsListChanged="RefreshAddedTestQuestions"
+           OnRemovedTestQuestionsListChanged="RefreshRemovedTestQuestions"
+           OnAddedTestMaterialsListChanged="RefreshAddedTestMaterials"
+           OnRemovedTestMaterialsListChanged="RefreshRemovedTestMaterials"
+           OnAddedTestResultsListChanged="RefreshAddedTestResults"
+           OnRemovedTestResultsListChanged="RefreshRemovedTestResults"
+           TestModel="TestModel" TestId="TestId" HeaderText="Editeaza test"
+           SubmitForm="SubmitForm" BreadCrumbText="Editare"></TestsForm>

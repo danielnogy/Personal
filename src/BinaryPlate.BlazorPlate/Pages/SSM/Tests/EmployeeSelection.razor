@@ -1,3 +1,44 @@
-﻿<h3>EmployeeSelection</h3>
+﻿@using BinaryPlate.BlazorPlate.Contracts.Consumers.SSM
+@using BinaryPlate.BlazorPlate.Features.SSM.Employees.Queries.GetEmployees
+@using BinaryPlate.BlazorPlate.Features.SSM.MaterialCategories.Queries.GetMaterialCategoriess
+@using BinaryPlate.BlazorPlate.Features.SSM.Materials.Queries.GetMaterials
+@using Syncfusion.Blazor.Popups
+@implements IDisposable
+
+<SfGrid @ref="Grid" AllowTextWrap="true" AllowSelection="true" DataSource="EmployeeItems">
+    <GridSelectionSettings CheckboxMode="CheckboxSelectionType.ResetOnRowClick" CheckboxOnly="true" PersistSelection="true" Type="Syncfusion.Blazor.Grids.SelectionType.Multiple" Mode="Syncfusion.Blazor.Grids.SelectionMode.Row"></GridSelectionSettings>
+    <GridColumns>
+        <GridColumn Type="ColumnType.CheckBox" MinWidth="50" Width="50"></GridColumn>
+        <GridColumn Field=@nameof(EmployeeItem.Id) IsPrimaryKey="true" IsIdentity="true" Visible="false"></GridColumn>
+        <GridColumn Field=@nameof(EmployeeItem.Name) HeaderText="Nume complet"></GridColumn>
+        <GridColumn Field=@nameof(EmployeeItem.Email) HeaderText="Email"></GridColumn>
+    </GridColumns>
+    <GridTemplates>
+        <ToolbarTemplate Context="ToolbarContext">
+            <SfToolbar>
+                <ToolbarEvents Clicked="ToolbarClickHandler"></ToolbarEvents>
+                <ToolbarItems>
+                    <ToolbarItem Type="ItemType.Input">
+                        <Template>
+                            @* <SfDropDownList TItem="MaterialCategoryItem" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains" TValue="int" DataSource="MaterialCategoryItems.OrderBy(x=>x.Name)" @bind-Value="SelectedMaterialCategoryId" Placeholder="Categorie">
+                                <DropDownListEvents TItem="MaterialCategoryItem" TValue="int" ValueChange="@(async ()=>await EmployeesLoad())"></DropDownListEvents>
+                                <DropDownListFieldSettings Text="Name" Value="Id"></DropDownListFieldSettings>
+                            </SfDropDownList> *@
+                        </Template>
+                    </ToolbarItem>
+                    <ToolbarItem Type="ItemType.Separator"></ToolbarItem>
+                    <ToolbarItem Type="ItemType.Input" Align="ItemAlign.Right">
+                        <Template>
+                            <SfTextBox @bind-Value="SearchText" Placeholder="Cautare cuvant/fraza cheie" @oninput=InputHandler></SfTextBox>
+                        </Template>
+                    </ToolbarItem>
+                </ToolbarItems>
+            </SfToolbar>
+        </ToolbarTemplate>
+    </GridTemplates>
+    <GridEvents TValue="EmployeeItem" DataBound="DataBound" RowSelected="OnRowSelected" RowDeselected="OnRowDeselected"></GridEvents>
+</SfGrid>
+<SfPager @ref="Pager" NumericItemsCount="5" TotalItemsCount=TotalItems PageSize="@PageSize" PageChanged="PageChangedHandler"></SfPager>
+
 
 

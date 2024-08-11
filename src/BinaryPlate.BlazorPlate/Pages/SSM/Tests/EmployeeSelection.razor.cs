@@ -2,8 +2,6 @@ using BinaryPlate.BlazorPlate.Contracts.Consumers.SSM;
 using BinaryPlate.BlazorPlate.Features.SSM.Employees.Queries.GetEmployees;
 using BinaryPlate.BlazorPlate.Features.SSM.Tests.Commands.CreateTest.AddModels;
 using BinaryPlate.BlazorPlate.Features.SSM.Tests.Commands.UpdateTest.EditModels;
-using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetQuestionForEdit;
-using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTestsMaterials;
 using BinaryPlate.BlazorPlate.Features.SSM.Tests.Queries.GetTestsResults;
 using Syncfusion.Blazor.Grids;
 using Syncfusion.Blazor.Navigations;
@@ -11,7 +9,7 @@ using Syncfusion.Blazor.Popups;
 
 namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
 {
-    public partial class EmployeeSelection:ComponentBase
+    public partial class EmployeeSelection : ComponentBase
     {
         [Parameter] public bool Visible { get; set; }
         [Parameter] public int TestId { get; set; }
@@ -33,11 +31,11 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
         public List<EmployeeItem> SelectedEmployees { get; set; } = new();
         private List<EmployeeItem> EmployeeItems { get; set; } = new();
         private SfGrid<EmployeeItem> Grid { get; set; }
-        private GetEmployeesQuery GetEmployeesQuery { get; set; } = new ();
-        private GetEmployeesResponse GetEmployeesResponse { get; set; } = new ();
+        private GetEmployeesQuery GetEmployeesQuery { get; set; } = new();
+        private GetEmployeesResponse GetEmployeesResponse { get; set; } = new();
         private List<TestResultItem> TestResultItems { get; set; } = new();
         private List<int> TestResultItemsResultIds { get; set; } = new();
-        private GetTestResultsQuery GetTestResultsQuery { get; set; } = new ();
+        private GetTestResultsQuery GetTestResultsQuery { get; set; } = new();
 
 
         public int TotalItems { get; set; } = 1;
@@ -142,20 +140,20 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
         {
             if (firstRender)
             {
-                await MaterialCategoriesLoad();
+                //await MaterialCategoriesLoad(); //load departments
                 if (TestId != 0)
                 {
-                    await TestMaterialsLoad();
+                    await TestResultsLoad();
                 }
 
                 TimerObject.OnElapsed += async () =>
                 {
-                    await MaterialsLoad();
+                    await EmployeesLoad();
                 };
                 TimerObject.SetTimer(600);
             }
         }
-        private async Task TestMaterialsLoad()
+        private async Task TestResultsLoad()
         {
             GetTestResultsQuery.RowsPerPage = -1;
             GetTestResultsQuery.TestId = TestId;
@@ -205,7 +203,7 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
             {
                 if (responseWrapper.Payload != null)
                 {
-                    TotalItems = responseWrapper.Payload.Materials.TotalRows;
+                    TotalItems = responseWrapper.Payload.Employees.TotalRows;
                     GetEmployeesResponse = responseWrapper.Payload;
                     if (TestId != 0)
                     {
@@ -229,36 +227,36 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
         }
 
         //getdepartments 
-        private async Task MaterialCategoriesLoad()
-        {
+        //private async Task MaterialCategoriesLoad()
+        //{
 
-            while (Pager == null)
-            {
-                await Task.Delay(30);
-            }
-            GetMaterialCategoriesQuery.RowsPerPage = -1;
-            GetMaterialCategoriesQuery.SortBy = "";
+        //    while (Pager == null)
+        //    {
+        //        await Task.Delay(30);
+        //    }
+        //    GetMaterialCategoriesQuery.RowsPerPage = -1;
+        //    GetMaterialCategoriesQuery.SortBy = "";
 
-            var responseWrapper = await MaterialCategoriesClient.GetMaterialCategories(GetMaterialCategoriesQuery);
-            if (responseWrapper.IsSuccessStatusCode)
-            {
-                if (responseWrapper.Payload != null)
-                {
-                    //TotalItems = responseWrapper.Payload.Materials.TotalRows;
-                    GetMaterialCategoriesResponse = responseWrapper.Payload;
-                    MaterialCategoryItems = GetMaterialCategoriesResponse.MaterialCategories.Items.ToList();
-                    MaterialCategoryItems.Add(new MaterialCategoryItem { Id = 0, Name = " Toate " });
-                    MaterialCategoryItems.Add(new MaterialCategoryItem { Id = -1, Name = " Selectate " });
-                    if (Grid != null)
-                        await Grid.Refresh();
-                    StateHasChanged();
+        //    var responseWrapper = await MaterialCategoriesClient.GetMaterialCategories(GetMaterialCategoriesQuery);
+        //    if (responseWrapper.IsSuccessStatusCode)
+        //    {
+        //        if (responseWrapper.Payload != null)
+        //        {
+        //            //TotalItems = responseWrapper.Payload.Materials.TotalRows;
+        //            GetMaterialCategoriesResponse = responseWrapper.Payload;
+        //            MaterialCategoryItems = GetMaterialCategoriesResponse.MaterialCategories.Items.ToList();
+        //            MaterialCategoryItems.Add(new MaterialCategoryItem { Id = 0, Name = " Toate " });
+        //            MaterialCategoryItems.Add(new MaterialCategoryItem { Id = -1, Name = " Selectate " });
+        //            if (Grid != null)
+        //                await Grid.Refresh();
+        //            StateHasChanged();
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
         private async void PageChangedHandler(PageChangedEventArgs args)
         {
-            await MaterialsLoad();
+            await EmployeesLoad();
             StateHasChanged();
         }
         private async void InputHandler(Microsoft.AspNetCore.Components.ChangeEventArgs args)
@@ -272,13 +270,13 @@ namespace BinaryPlate.BlazorPlate.Pages.SSM.Tests
 
 
         }
-        public List<MaterialItem> GetSelectedRecords()
+        public List<EmployeeItem> GetSelectedRecords()
         {
-            return SelectedMaterials;
+            return SelectedEmployees;
         }
-        public void SetSelectedRecords(List<MaterialItem> items)
+        public void SetSelectedRecords(List<EmployeeItem> items)
         {
-            SelectedMaterials = items;
+            SelectedEmployees = items;
         }
 
         public void Dispose()
