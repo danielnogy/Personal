@@ -1,3 +1,5 @@
+Model de abonament pay as you go in functie de traficul de angajati, si la firmele mari se pot face oferte custom pentru plata anuala
+
 **What actions are required before running the project?**
 
 *  From Visual Studio, set the `BinaryPlate.Gateway`, `BinaryPlate.BlazorPlate`, and `BinaryPlate.WebAPI` projects as startup projects by right-clicking on the solution in the Solution Explorer, and then, choose `Multiple startup projects` and set the Action for each project to `Start`.
